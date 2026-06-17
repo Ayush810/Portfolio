@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ayush Tiwari — Power BI Developer & Data Analyst</title>
+<meta name="description" content="Ayush Tiwari — PL-300 certified Power BI Developer turning messy operational data into dashboards people use to make decisions. 300+ reports shipped across corporate analytics and 24/7 mining operations." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E141C;
+    --bg-grid:#141C26;
+    --surface:#151E29;
+    --surface-2:#1B2533;
+    --line:#28323F;
+    --line-soft:#202935;
+    --text:#E7EDF3;
+    --muted:#93A1B0;
+    --faint:#5E6B79;
+    --accent:#F2A93B;
+    --accent-dim:rgba(242,169,59,.14);
+    --accent-line:rgba(242,169,59,.42);
+    --teal:#54C0C9;
+    --radius:5px;
+    --maxw:1180px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --display:"Saira",sans-serif;
+    --body:"IBM Plex Sans",sans-serif;
+    --mono:"IBM Plex Mono",monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--bg-grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--bg-grid) 1px,transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 0%,transparent 75%);
+    mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 0%,transparent 75%);
+    opacity:.6;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent);color:#10151c}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+  .eyebrow{
+    font-family:var(--mono);font-size:11.5px;font-weight:500;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--accent);
+    display:inline-flex;align-items:center;gap:9px;
+  }
+  .eyebrow::before{content:"";width:7px;height:7px;background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-dim);border-radius:1px;flex:none}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(14,20,28,.78);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;
+    height:62px;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);
+    font-weight:700;letter-spacing:.02em;font-size:17px}
+  .brand .glyph{width:26px;height:26px;border:1.5px solid var(--accent);
+    border-radius:4px;display:grid;place-items:center;color:var(--accent);
+    font-family:var(--mono);font-size:13px;font-weight:600}
+  .nav{display:flex;align-items:center;gap:30px}
+  .nav a{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;color:var(--muted);
+    transition:color .2s}
+  .nav a:hover{color:var(--text)}
+  .nav .btn{padding:8px 16px;border:1px solid var(--line);border-radius:var(--radius);
+    color:var(--text);transition:border-color .2s,background .2s}
+  .nav .btn:hover{border-color:var(--accent-line);background:var(--accent-dim);color:var(--accent)}
+  .menu-toggle{display:none}
+
+  /* ---------- hero ---------- */
+  .hero{padding:78px 0 58px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{
+    font-family:var(--display);font-weight:700;line-height:.96;
+    font-size:clamp(46px,7vw,84px);letter-spacing:-.01em;margin:20px 0 0;
+  }
+  .hero h1 .l2{display:block;color:var(--muted);font-weight:500}
+  .role-line{display:flex;align-items:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+  .role-tag{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;color:var(--text);
+    border:1px solid var(--line);border-radius:var(--radius);padding:6px 12px;background:var(--surface)}
+  .role-tag b{color:var(--accent);font-weight:600}
+  .hero p.lede{color:var(--muted);font-size:17px;max-width:46ch;margin-top:24px;line-height:1.65}
+  .hero p.lede b{color:var(--text);font-weight:500}
+  .hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+  .cta{font-family:var(--mono);font-size:13px;letter-spacing:.04em;padding:12px 20px;
+    border-radius:var(--radius);display:inline-flex;align-items:center;gap:9px;transition:.2s}
+  .cta-primary{background:var(--accent);color:#10151c;font-weight:600}
+  .cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px -8px var(--accent)}
+  .cta-ghost{border:1px solid var(--line);color:var(--text)}
+  .cta-ghost:hover{border-color:var(--accent-line);color:var(--accent)}
+
+  /* hero chart panel */
+  .hero-panel{position:relative}
+  .panel{
+    background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    overflow:hidden;
+  }
+  .panel-head{display:flex;align-items:center;justify-content:space-between;
+    padding:13px 16px;border-bottom:1px solid var(--line-soft);background:var(--surface-2)}
+  .panel-head .ttl{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted)}
+  .panel-head .dots{display:flex;gap:6px}
+  .panel-head .dots i{width:7px;height:7px;border-radius:50%;background:var(--line);display:block}
+  .panel-head .dots i.live{background:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+  .chartbox{padding:18px 16px 14px}
+  .chart-svg{width:100%;height:auto;display:block}
+  .chart-caption{font-family:var(--mono);font-size:10.5px;color:var(--faint);
+    letter-spacing:.06em;margin-top:6px}
+
+  /* draw animation */
+  .draw-line{stroke-dasharray:1400;stroke-dashoffset:1400;
+    transition:stroke-dashoffset 1.8s var(--ease)}
+  .drawn .draw-line{stroke-dashoffset:0}
+  .draw-area{opacity:0;transition:opacity 1s ease .6s}
+  .drawn .draw-area{opacity:1}
+  .draw-dot{opacity:0;transition:opacity .4s ease}
+  .drawn .draw-dot{opacity:1;transition-delay:1.5s}
+
+  /* ---------- kpi strip ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:54px;
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .kpi{padding:22px 22px 20px;border-right:1px solid var(--line-soft);position:relative}
+  .kpi:last-child{border-right:none}
+  .kpi .num{font-family:var(--display);font-weight:700;font-size:clamp(34px,4.4vw,46px);
+    line-height:1;color:var(--text);letter-spacing:-.01em}
+  .kpi .num .u{color:var(--accent);font-size:.55em;vertical-align:top;margin-left:2px}
+  .kpi .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);
+    margin-top:11px;line-height:1.45;text-transform:uppercase}
+  .kpi::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
+    background:var(--accent);transition:width 1.1s var(--ease)}
+  .kpis.drawn .kpi::after{width:38%}
+
+  /* ---------- section scaffold ---------- */
+  section.block{padding:74px 0;position:relative}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+    margin-bottom:38px;border-bottom:1px solid var(--line-soft);padding-bottom:18px;flex-wrap:wrap}
+  .sec-head h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,3.4vw,40px);
+    letter-spacing:-.01em}
+  .sec-head .idx{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.12em}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:36px;align-items:start}
+  .about-body p{color:var(--muted);font-size:17px;margin-bottom:18px;max-width:60ch;line-height:1.7}
+  .about-body p b{color:var(--text);font-weight:500}
+  .about-body .accentword{color:var(--accent)}
+  .factcard{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 0}
+  .fact{display:flex;justify-content:space-between;gap:14px;padding:14px 20px;
+    border-bottom:1px solid var(--line-soft);align-items:center}
+  .fact:last-child{border-bottom:none}
+  .fact .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--faint);
+    text-transform:uppercase}
+  .fact .v{font-size:14px;text-align:right;color:var(--text);font-weight:500}
+  .fact .v.amb{color:var(--accent)}
+
+  /* ---------- experience ---------- */
+  .xp{display:flex;gap:24px;padding:0 0 36px;position:relative}
+  .xp:last-child{padding-bottom:0}
+  .xp-rail{flex:none;display:flex;flex-direction:column;align-items:center;width:14px}
+  .xp-node{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);
+    background:var(--bg);flex:none;margin-top:5px}
+  .xp:not(:last-child) .xp-line{flex:1;width:2px;background:var(--line);margin-top:6px}
+  .xp.current .xp-node{background:var(--accent);box-shadow:0 0 0 5px var(--accent-dim)}
+  .xp-body{flex:1;padding-bottom:6px}
+  .xp-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .xp-role{font-family:var(--display);font-size:22px;font-weight:600}
+  .xp-co{color:var(--accent);font-weight:500;font-size:15px;margin-top:2px}
+  .xp-date{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.05em;white-space:nowrap}
+  .xp-badge{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+    color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-line);
+    padding:2px 9px;border-radius:20px;margin-left:8px;vertical-align:middle;text-transform:uppercase}
+  .xp ul{list-style:none;margin-top:16px;display:grid;gap:10px}
+  .xp li{color:var(--muted);font-size:15px;padding-left:20px;position:relative;line-height:1.55}
+  .xp li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:1.5px;
+    background:var(--accent)}
+  .xp li b{color:var(--text);font-weight:500}
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .proj{display:flex;flex-direction:column;transition:transform .3s var(--ease),border-color .3s}
+  .proj:hover{transform:translateY(-4px);border-color:var(--accent-line)}
+  .proj .panel-head .ttl{color:var(--accent)}
+  .proj .viz{padding:20px 18px 6px;min-height:128px;display:flex;align-items:center}
+  .proj .viz svg{width:100%;height:auto;display:block}
+  .proj .pbody{padding:6px 18px 22px;flex:1;display:flex;flex-direction:column}
+  .proj h3{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.15;margin-bottom:10px}
+  .proj p{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .proj .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+  .proj .tags span{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--muted);
+    border:1px solid var(--line-soft);border-radius:3px;padding:3px 8px}
+  .proj.feature{grid-column:span 2}
+  .proj.feature .feature-in{display:grid;grid-template-columns:1fr 1.1fr;gap:0}
+  .proj.feature .viz{border-right:1px solid var(--line-soft);min-height:170px}
+
+  /* mini-chart animation helpers */
+  .gbar{transform:scaleX(0);transform-origin:left center;transition:transform 1.1s var(--ease)}
+  .drawn .gbar{transform:scaleX(1)}
+  .gcol{transform:scaleY(0);transform-origin:bottom center;transition:transform .9s var(--ease)}
+  .drawn .gcol{transform:scaleY(1)}
+  .gline{stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 1.5s var(--ease)}
+  .drawn .gline{stroke-dashoffset:0}
+  .garea{opacity:0;transition:opacity .9s ease .5s}
+  .drawn .garea{opacity:1}
+  .gring{stroke-dasharray:var(--circ);stroke-dashoffset:var(--circ);
+    transition:stroke-dashoffset 1.4s var(--ease)}
+  .drawn .gring{stroke-dashoffset:var(--off)}
+
+  /* ---------- skills ---------- */
+  .skill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .skill-cat .panel-head .ttl{color:var(--accent)}
+  .skill-cat ul{list-style:none;padding:14px 18px}
+  .skill-cat li{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14.5px;color:var(--text)}
+  .skill-cat li::before{content:"";width:5px;height:5px;background:var(--accent);
+    border-radius:1px;flex:none}
+
+  /* ---------- contact ---------- */
+  .contact{padding:80px 0 30px}
+  .contact-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:48px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+  .contact-card h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,4vw,46px);
+    line-height:1.02;letter-spacing:-.01em}
+  .contact-card p{color:var(--muted);margin-top:16px;max-width:42ch;font-size:16px}
+  .contact-links{display:grid;gap:10px}
+  .clink{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:15px 18px;border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--surface-2);transition:.2s}
+  .clink:hover{border-color:var(--accent-line);transform:translateX(3px)}
+  .clink .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+  .clink .v{font-size:14.5px;color:var(--text);font-weight:500}
+  .clink .arrow{color:var(--accent);font-family:var(--mono)}
+
+  footer{border-top:1px solid var(--line-soft);padding:26px 0 40px;margin-top:50px}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.05em}
+  .foot-in a:hover{color:var(--accent)}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .hero-panel{order:2}
+    .about-grid{grid-template-columns:1fr;gap:24px}
+    .proj-grid{grid-template-columns:1fr}
+    .proj.feature{grid-column:span 1}
+    .proj.feature .feature-in{grid-template-columns:1fr}
+    .proj.feature .viz{border-right:none;border-bottom:1px solid var(--line-soft)}
+    .skill-grid{grid-template-columns:1fr}
+    .contact-card{grid-template-columns:1fr;padding:32px}
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .kpi:nth-child(2){border-right:none}
+    .kpi:nth-child(1),.kpi:nth-child(2){border-bottom:1px solid var(--line-soft)}
+  }
+  @media(max-width:560px){
+    .wrap,.topbar-inner{padding-left:18px;padding-right:18px}
+    .nav a:not(.btn){display:none}
+    .nav{gap:0}
+    .kpis{grid-template-columns:1fr}
+    .kpi{border-right:none;border-bottom:1px solid var(--line-soft)}
+    .kpi:last-child{border-bottom:none}
+    .role-line{gap:8px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+    .reveal{opacity:1;transform:none}
+    .draw-line,.gline,.gring{stroke-dashoffset:0!important}
+    .draw-area,.garea,.draw-dot{opacity:1!important}
+    .gbar{transform:scaleX(1)!important}.gcol{transform:scaleY(1)!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== TOP BAR ======== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="brand"><span class="glyph">AT</span> Ayush&nbsp;Tiwari</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact" class="btn">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ======== HERO ======== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-text reveal">
+        <span class="eyebrow">Power BI Developer · Data Analyst</span>
+        <h1>Ayush Tiwari<span class="l2">builds dashboards<br>people decide with.</span></h1>
+        <div class="role-line">
+          <span class="role-tag"><b>PL-300</b> Certified Data Analyst Associate</span>
+          <span class="role-tag">Now at <b>Thiess</b> · Mining Ops</span>
+        </div>
+        <p class="lede">I turn messy operational data into <b>clear, fast, trustworthy</b> Power BI reports. Nearly five years and 300+ dashboards in — most recently for 24/7 mining operations, where being an hour wrong means a haul truck sits idle.</p>
+        <div class="hero-cta">
+          <a href="#work" class="cta cta-primary">View work →</a>
+          <a href="mailto:aayyush456@gmail.com" class="cta cta-ghost">aayyush456@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="hero-panel reveal">
+        <div class="panel">
+          <div class="panel-head">
+            <span class="ttl">Reports shipped — cumulative</span>
+            <span class="dots"><i class="live"></i><i></i><i></i></span>
+          </div>
+          <div class="chartbox">
+            <svg class="chart-svg" id="heroChart" viewBox="0 0 460 240" preserveAspectRatio="none" role="img" aria-label="Cumulative reports shipped trend, rising over time">
+              <!-- gridlines -->
+              <g stroke="var(--line-soft)" stroke-width="1">
+                <line x1="0" y1="60" x2="460" y2="60"/>
+                <line x1="0" y1="120" x2="460" y2="120"/>
+                <line x1="0" y1="180" x2="460" y2="180"/>
+              </g>
+              <!-- area -->
+              <path class="draw-area" d="M0,210 L60,196 L130,168 L205,140 L285,96 L360,58 L460,26 L460,240 L0,240 Z" fill="url(#hg)"/>
+              <!-- line -->
+              <path class="draw-line" d="M0,210 L60,196 L130,168 L205,140 L285,96 L360,58 L460,26" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+              <!-- end dot -->
+              <circle class="draw-dot" cx="460" cy="26" r="4.5" fill="var(--accent)"/>
+              <circle class="draw-dot" cx="460" cy="26" r="9" fill="none" stroke="var(--accent-line)" stroke-width="1.5"/>
+              <defs>
+                <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="chart-caption">// 2021 → 2026 · trend illustrative of 300+ delivered reports</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI STRIP -->
+    <div class="kpis reveal" id="kpis">
+      <div class="kpi"><div class="num" data-target="300">0<span class="u">+</span></div><div class="lbl">Reports &amp; dashboards shipped</div></div>
+      <div class="kpi"><div class="num">4<span class="u">y</span> 10<span class="u">m</span></div><div class="lbl">Years in business intelligence</div></div>
+      <div class="kpi"><div class="num" data-target="7000" data-comma="1">0<span class="u">+</span></div><div class="lbl">Reports rationalized into Microsoft Fabric</div></div>
+      <div class="kpi"><div class="num" data-target="80">0<span class="u">%</span></div><div class="lbl">Power BI licence cost reduced</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== ABOUT ======== -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Profile</h2>
+      <span class="idx">01 / ABOUT</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p>I'm a <b>Power BI Developer and Data Analyst</b> who treats a report like a product: it has to be fast, accurate, and obvious enough that someone busy can act on it in seconds.</p>
+        <p>I work end-to-end — modelling and relationships, <span class="accentword">Power Query</span> ETL, advanced <span class="accentword">DAX</span>, and the unglamorous platform side: deployment pipelines, on-premises gateways, workspace security and licensing. Lately I've been pushing into <b>Microsoft Fabric</b> and <b>Fabric Data Agents</b>, preparing AI-ready datasets so analytics and copilots actually have clean data to stand on.</p>
+        <p>Today I sit close to the field at <b>Thiess</b>, building reporting for live mining operations — production, fleet, equipment reliability — where the data never stops and the decisions are physical.</p>
+      </div>
+      <aside class="factcard reveal" aria-label="Quick facts">
+        <div class="fact"><span class="k">Certification</span><span class="v amb">PL-300 · Microsoft</span></div>
+        <div class="fact"><span class="k">Current role</span><span class="v">Power BI Analyst, Thiess</span></div>
+        <div class="fact"><span class="k">Based in</span><span class="v">Gurugram, India</span></div>
+        <div class="fact"><span class="k">Focus</span><span class="v">BI · Fabric · AI-ready data</span></div>
+        <div class="fact"><span class="k">Reports built</span><span class="v amb">300+</span></div>
+        <div class="fact"><span class="k">Status</span><span class="v">Open to opportunities</span></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ======== EXPERIENCE ======== -->
+<section class="block" id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Experience</h2>
+      <span class="idx">02 / TRACK RECORD</span>
+    </div>
+
+    <div class="xp current reveal">
+      <div class="xp-rail"><span class="xp-node"></span><span class="xp-line"></span></div>
+      <div class="xp-body">
+        <div class="xp-top">
+          <div>
+            <div class="xp-role">Power BI Analyst <span class="xp-badge">Current</span></div>
+            <div class="xp-co">Thiess</div>
+          </div>
+          <div class="xp-date">MAY 2025 — PRESENT</div>
+        </div>
+        <ul>
+          <li>Build and maintain interactive dashboards monitoring <b>daily mining operations</b> — production performance, equipment utilisation, and asset availability.</li>
+          <li>Develop <b>Microsoft Fabric Data Agents</b> and prepare AI-ready datasets and optimised models to enable advanced analytics and AI-driven insights.</li>
+          <li>Design efficient data models for large operational datasets across <b>mining production, fleet management, and site performance</b>.</li>
+          <li>Integrate production systems, equipment telemetry, fleet databases, and enterprise sources into unified reporting models.</li>
+          <li>Partner with operations teams, engineers, and stakeholders to translate requirements into BI solutions they trust.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="xp reveal">
+      <div class="xp-rail"><span class="xp-node"></span></div>
+      <div class="xp-body">
+        <div class="xp-top">
+          <div>
+            <div class="xp-role">Power BI Developer</div>
+            <div class="xp-co">Cynoteck Technology Solutions</div>
+          </div>
+          <div class="xp-date">MAY 2021 — MAY 2025</div>
+        </div>
+        <ul>
+          <li>Designed <b>CI/CD deployment pipelines</b> to automate releases and shorten time-to-market for Power BI solutions.</li>
+          <li>Configured and deployed <b>on-premises data gateways</b> for secure connections, with best practices for reliability, scalability, and security.</li>
+          <li>Managed Power BI environments — user access, security, and licensing — and tuned configurations to lift performance and user experience.</li>
+          <li>Built data models and relationships, and used <b>Power Query</b> to extract, transform, and load from multiple sources.</li>
+          <li>Authored <b>advanced DAX</b> measures and calculations, and wrote optimised SQL for efficient retrieval.</li>
+          <li>Delivered interactive dashboards that let stakeholders explore data in real time.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== WORK / PROJECTS ======== -->
+<section class="block" id="work">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Selected work</h2>
+      <span class="idx">03 / PROJECTS</span>
+    </div>
+
+    <div class="proj-grid">
+
+      <!-- FEATURE: Fabric migration (real numbers) -->
+      <article class="proj feature panel reveal">
+        <div class="feature-in">
+          <div class="viz">
+            <svg viewBox="0 0 300 170" role="img" aria-label="Reports reduced from over 7,000 to 3,000 and licences from 300 to 60">
+              <text x="0" y="16" font-family="IBM Plex Mono" font-size="10" letter-spacing="1" fill="var(--faint)">REPORTS  ·  BEFORE / AFTER</text>
+              <!-- before bar -->
+              <rect x="0" y="30" width="300" height="20" rx="3" fill="var(--surface-2)"/>
+              <rect class="gbar" x="0" y="30" width="300" height="20" rx="3" fill="var(--teal)" opacity="0.55"/>
+              <text x="294" y="44" text-anchor="end" font-family="IBM Plex Mono" font-size="11" fill="var(--text)" font-weight="600">7,000+</text>
+              <!-- after bar -->
+              <rect x="0" y="58" width="300" height="20" rx="3" fill="var(--surface-2)"/>
+              <rect class="gbar" x="0" y="58" width="128" height="20" rx="3" fill="var(--accent)" style="transition-delay:.25s"/>
+              <text x="134" y="72" font-family="IBM Plex Mono" font-size="11" fill="var(--accent)" font-weight="600">3,000</text>
+
+              <text x="0" y="106" font-family="IBM Plex Mono" font-size="10" letter-spacing="1" fill="var(--faint)">POWER BI LICENCES</text>
+              <rect x="0" y="118" width="300" height="20" rx="3" fill="var(--surface-2)"/>
+              <rect class="gbar" x="0" y="118" width="300" height="20" rx="3" fill="var(--teal)" opacity="0.4" style="transition-delay:.1s"/>
+              <text x="294" y="132" text-anchor="end" font-family="IBM Plex Mono" font-size="11" fill="var(--muted)" font-weight="600">300</text>
+              <rect class="gbar" x="0" y="118" width="60" height="20" rx="3" fill="var(--accent)" style="transition-delay:.4s"/>
+              <text x="66" y="132" font-family="IBM Plex Mono" font-size="11" fill="var(--accent)" font-weight="600">60</text>
+
+              <text x="0" y="162" font-family="IBM Plex Mono" font-size="11" fill="var(--accent)" font-weight="600">↓ 80% licence cost</text>
+            </svg>
+          </div>
+          <div class="pbody">
+            <div class="panel-head" style="margin:-6px -18px 16px;border-radius:0">
+              <span class="ttl">Flagship · Platform migration</span>
+              <span class="dots"><i class="live"></i><i></i><i></i></span>
+            </div>
+            <h3>Power BI → Microsoft Fabric migration</h3>
+            <p>Migrated and rationalized <b style="color:var(--text)">7,000+ Power BI reports</b> into Microsoft Fabric, cutting the inventory to <b style="color:var(--text)">3,000</b> by consolidating duplicates and tightening access. The cleanup dropped licences from 300 to 60 — an <b style="color:var(--accent)">80% reduction</b> in licence cost.</p>
+            <div class="tags"><span>Microsoft Fabric</span><span>Migration</span><span>Governance</span><span>Cost optimisation</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Daily mining production -->
+      <article class="proj panel reveal">
+        <div class="panel-head">
+          <span class="ttl">Thiess · Operations</span>
+          <span class="dots"><i class="live"></i><i></i><i></i></span>
+        </div>
+        <div class="viz">
+          <svg viewBox="0 0 320 110" role="img" aria-label="Downtime split across categories: scheduled, idle, maintenance and non-rostered time">
+            <text x="0" y="12" font-family="IBM Plex Mono" font-size="9.5" letter-spacing="1" fill="var(--faint)">24H DOWNTIME SPLIT  ·  PREVIEW</text>
+            <g>
+              <rect class="gbar" x="0" y="26" width="120" height="22" fill="var(--accent)"/>
+              <rect class="gbar" x="120" y="26" width="80" height="22" fill="var(--teal)" opacity="0.7" style="transition-delay:.15s"/>
+              <rect class="gbar" x="200" y="26" width="70" height="22" fill="var(--accent)" opacity="0.45" style="transition-delay:.3s"/>
+              <rect class="gbar" x="270" y="26" width="50" height="22" fill="var(--muted)" opacity="0.4" style="transition-delay:.45s"/>
+            </g>
+            <g font-family="IBM Plex Mono" font-size="9" fill="var(--muted)">
+              <text x="0" y="68"><tspan fill="var(--accent)">■</tspan> EOD</text>
+              <text x="78" y="68"><tspan fill="var(--teal)">■</tspan> IOD</text>
+              <text x="150" y="68"><tspan fill="var(--accent)" opacity="0.6">■</tspan> Maint.</text>
+              <text x="232" y="68"><tspan fill="var(--muted)">■</tspan> NRT</text>
+            </g>
+            <text x="0" y="96" font-family="IBM Plex Mono" font-size="9.5" fill="var(--faint)">root-cause via reason codes</text>
+          </svg>
+        </div>
+        <div class="pbody">
+          <h3>Daily mining production &amp; equipment performance</h3>
+          <p>A 24-hour view of excavator performance and operational delays — tracking downtime by EOD, IOD, maintenance, and Non-Rostered Time at equipment level, with reason-code diagnostics for root-cause analysis of lost production hours.</p>
+          <div class="tags"><span>Power BI</span><span>Telemetry</span><span>Delay diagnostics</span></div>
+        </div>
+      </article>
+
+      <!-- Equipment maintenance -->
+      <article class="proj panel reveal">
+        <div class="panel-head">
+          <span class="ttl">Thiess · Reliability</span>
+          <span class="dots"><i class="live"></i><i></i><i></i></span>
+        </div>
+        <div class="viz">
+          <svg viewBox="0 0 320 110" role="img" aria-label="Reliability gauges for mechanical and physical availability, with MTBF and MTTR metrics">
+            <!-- gauge 1 -->
+            <g transform="translate(56,58)">
+              <circle r="34" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
+              <circle class="gring" r="34" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"
+                transform="rotate(-90)" style="--circ:213.6;--off:53"/>
+              <text y="3" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="var(--text)" font-weight="600">Avail.</text>
+              <text y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="var(--muted)">MECHANICAL</text>
+            </g>
+            <!-- gauge 2 -->
+            <g transform="translate(150,58)">
+              <circle r="34" fill="none" stroke="var(--surface-2)" stroke-width="7"/>
+              <circle class="gring" r="34" fill="none" stroke="var(--teal)" stroke-width="7" stroke-linecap="round"
+                transform="rotate(-90)" style="--circ:213.6;--off:68;transition-delay:.2s"/>
+              <text y="3" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="var(--text)" font-weight="600">Avail.</text>
+              <text y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="var(--muted)">PHYSICAL</text>
+            </g>
+            <!-- metric chips -->
+            <g font-family="IBM Plex Mono" font-size="10" fill="var(--muted)">
+              <text x="210" y="40">MTBF</text>
+              <text x="210" y="58" fill="var(--accent)">↑ uptime</text>
+              <text x="210" y="80">MTTR</text>
+              <text x="210" y="98" fill="var(--teal)">↓ repair</text>
+            </g>
+          </svg>
+        </div>
+        <div class="pbody">
+          <h3>Equipment maintenance performance</h3>
+          <p>A reliability dashboard tracking fleet health across mining equipment — MTBF, MTTR, mechanical and physical availability, failure counts, and planned vs. unplanned maintenance, with period and rolling "Last 28 Days" views for benchmarking.</p>
+          <div class="tags"><span>Reliability</span><span>MTBF / MTTR</span><span>Maintenance planning</span></div>
+        </div>
+      </article>
+
+      <!-- Power supplies production -->
+      <article class="proj panel reveal">
+        <div class="panel-head">
+          <span class="ttl">Manufacturing</span>
+          <span class="dots"><i class="live"></i><i></i><i></i></span>
+        </div>
+        <div class="viz">
+          <svg viewBox="0 0 320 110" role="img" aria-label="Production throughput preview across a shift, shown as a column chart">
+            <text x="0" y="12" font-family="IBM Plex Mono" font-size="9.5" letter-spacing="1" fill="var(--faint)">PRODUCTION THROUGHPUT  ·  PREVIEW</text>
+            <line x1="0" y1="90" x2="320" y2="90" stroke="var(--line-soft)"/>
+            <g>
+              <rect class="gcol" x="6"   y="58" width="26" height="32" fill="var(--accent)" opacity="0.55"/>
+              <rect class="gcol" x="44"  y="44" width="26" height="46" fill="var(--accent)" opacity="0.65" style="transition-delay:.08s"/>
+              <rect class="gcol" x="82"  y="50" width="26" height="40" fill="var(--accent)" opacity="0.6" style="transition-delay:.16s"/>
+              <rect class="gcol" x="120" y="30" width="26" height="60" fill="var(--accent)" style="transition-delay:.24s"/>
+              <rect class="gcol" x="158" y="40" width="26" height="50" fill="var(--accent)" opacity="0.7" style="transition-delay:.32s"/>
+              <rect class="gcol" x="196" y="24" width="26" height="66" fill="var(--accent)" style="transition-delay:.4s"/>
+              <rect class="gcol" x="234" y="48" width="26" height="42" fill="var(--accent)" opacity="0.6" style="transition-delay:.48s"/>
+              <rect class="gcol" x="272" y="36" width="26" height="54" fill="var(--accent)" opacity="0.75" style="transition-delay:.56s"/>
+            </g>
+          </svg>
+        </div>
+        <div class="pbody">
+          <h3>Power supplies production dashboard</h3>
+          <p>A production overview for power-supply manufacturing — critical components for electronic devices — giving the line team a single place to monitor output and support decisions across the production process.</p>
+          <div class="tags"><span>Power BI</span><span>Manufacturing</span><span>Throughput</span></div>
+        </div>
+      </article>
+
+      <!-- Corporate improvements -->
+      <article class="proj panel reveal">
+        <div class="panel-head">
+          <span class="ttl">Corporate analytics</span>
+          <span class="dots"><i class="live"></i><i></i><i></i></span>
+        </div>
+        <div class="viz">
+          <svg viewBox="0 0 320 110" role="img" aria-label="Improvement initiative progress trending upward over time">
+            <text x="0" y="12" font-family="IBM Plex Mono" font-size="9.5" letter-spacing="1" fill="var(--faint)">INITIATIVE PROGRESS  ·  PREVIEW</text>
+            <g stroke="var(--line-soft)" stroke-width="1">
+              <line x1="0" y1="40" x2="320" y2="40"/>
+              <line x1="0" y1="70" x2="320" y2="70"/>
+            </g>
+            <path class="garea" d="M0,86 L60,78 L120,80 L180,58 L240,46 L320,28 L320,100 L0,100 Z" fill="url(#cg)"/>
+            <path class="gline" d="M0,86 L60,78 L120,80 L180,58 L240,46 L320,28" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="320" cy="28" r="3.5" fill="var(--accent)"/>
+            <defs>
+              <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="pbody">
+          <h3>Corporate improvements reports</h3>
+          <p>Tracks and analyses the progress of improvement initiatives across an organisation — visualising where strategies are working, where to push further, and giving stakeholders the evidence to drive growth with data.</p>
+          <div class="tags"><span>Power BI</span><span>KPI tracking</span><span>Stakeholder reporting</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ======== SKILLS ======== -->
+<section class="block" id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Capabilities</h2>
+      <span class="idx">04 / TOOLKIT</span>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-cat panel reveal">
+        <div class="panel-head"><span class="ttl">Modelling &amp; query</span></div>
+        <ul>
+          <li>DAX (advanced measures)</li>
+          <li>Power Query / M</li>
+          <li>Data modeling &amp; relationships</li>
+          <li>SQL &amp; SQL Server</li>
+          <li>ETL pipelines</li>
+        </ul>
+      </div>
+      <div class="skill-cat panel reveal">
+        <div class="panel-head"><span class="ttl">Platform &amp; ops</span></div>
+        <ul>
+          <li>Power BI Administration</li>
+          <li>CI/CD deployment pipelines</li>
+          <li>On-premises gateways</li>
+          <li>Source control management</li>
+          <li>Access, security &amp; licensing</li>
+        </ul>
+      </div>
+      <div class="skill-cat panel reveal">
+        <div class="panel-head"><span class="ttl">Fabric &amp; AI</span></div>
+        <ul>
+          <li>Microsoft Fabric</li>
+          <li>Fabric Data Agents</li>
+          <li>Preparing AI-ready data</li>
+          <li>Azure Databricks</li>
+          <li>Copilot integration</li>
+        </ul>
+      </div>
+      <div class="skill-cat panel reveal">
+        <div class="panel-head"><span class="ttl">Visualization &amp; design</span></div>
+        <ul>
+          <li>Power BI report design</li>
+          <li>Dashboard design</li>
+          <li>Data visualization</li>
+          <li>Tableau</li>
+          <li>Figma</li>
+        </ul>
+      </div>
+      <div class="skill-cat panel reveal">
+        <div class="panel-head"><span class="ttl">Analysis</span></div>
+        <ul>
+          <li>Data analysis</li>
+          <li>Operational reporting</li>
+          <li>KPI &amp; metric design</li>
+          <li>Stakeholder requirements</li>
+          <li>Microsoft Excel</li>
+        </ul>
+      </div>
+      <div class="skill-cat panel reveal">
+        <div class="panel-head"><span class="ttl">Domains</span></div>
+        <ul>
+          <li>Mining operations</li>
+          <li>Fleet &amp; equipment reliability</li>
+          <li>Manufacturing / production</li>
+          <li>Corporate performance</li>
+          <li>Cost optimisation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CONTACT ======== -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <div>
+        <span class="eyebrow">Available for new work</span>
+        <h2 style="margin-top:18px">Have data that<br>deserves a better view?</h2>
+        <p>Whether it's a migration, a fresh build, or rescuing a report nobody trusts — I'd like to hear about it.</p>
+      </div>
+      <div class="contact-links">
+        <a class="clink" href="mailto:aayyush456@gmail.com"><span><span class="k">Email</span><br><span class="v">aayyush456@gmail.com</span></span><span class="arrow">→</span></a>
+        <a class="clink" href="tel:+917895855213"><span><span class="k">Phone</span><br><span class="v">+91 78958 55213</span></span><span class="arrow">→</span></a>
+        <a class="clink" href="https://linkedin.com/in/ayush-tiwari-0810" target="_blank" rel="noopener"><span><span class="k">LinkedIn</span><br><span class="v">ayush-tiwari-0810</span></span><span class="arrow">→</span></a>
+        <a class="clink" href="https://github.com/Ayush810" target="_blank" rel="noopener"><span><span class="k">GitHub</span><br><span class="v">Ayush810</span></span><span class="arrow">→</span></a>
+        <a class="clink" href="https://medium.com/@aayyush456" target="_blank" rel="noopener"><span><span class="k">Writing</span><br><span class="v">medium.com/@aayyush456</span></span><span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="wrap foot-in">
+      <span>© 2026 Ayush Tiwari · Power BI Developer</span>
+      <span>Gurugram, India · <a href="#top">Back to top ↑</a></span>
+    </div>
+  </footer>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ----- reveal + chart draw on scroll -----
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in');
+      // trigger any svg draw inside
+      e.target.classList.add('drawn');
+      var svgs = e.target.querySelectorAll('svg');
+      svgs.forEach(function(s){ s.parentElement.classList.add('drawn'); });
+      // kpis countup
+      if(e.target.id === 'kpis') startCounts(e.target);
+      io.unobserve(e.target);
+    });
+  }, {threshold:0.18});
+
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // hero chart + project vizes draw via their own wrapper class
+  function markDrawn(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      var o = new IntersectionObserver(function(ents){
+        ents.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('drawn'); o.unobserve(en.target);} });
+      },{threshold:0.3});
+      o.observe(el);
+    });
+  }
+  markDrawn('.chartbox');
+  markDrawn('.viz');
+
+  // ----- count up -----
+  function startCounts(scope){
+    if(reduce){ scope.querySelectorAll('.num[data-target]').forEach(function(n){ writeNum(n, +n.dataset.target, n.dataset.comma); }); return; }
+    scope.querySelectorAll('.num[data-target]').forEach(function(n){
+      var target = +n.dataset.target, comma = n.dataset.comma, t0=null, dur=1500;
+      function step(ts){
+        if(!t0) t0=ts;
+        var p = Math.min((ts-t0)/dur,1);
+        var eased = 1-Math.pow(1-p,3);
+        writeNum(n, Math.round(target*eased), comma);
+        if(p<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  function writeNum(n, val, comma){
+    var u = n.querySelector('.u'); var uHtml = u ? u.outerHTML : '';
+    var str = comma ? val.toLocaleString('en-US') : String(val);
+    n.innerHTML = str + uHtml;
+  }
+})();
+</script>
+</body>
+</html>
